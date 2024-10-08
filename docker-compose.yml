@@ -1,0 +1,19 @@
+services:
+  web:
+    container_name: web
+    build: ./pill-counting-web
+    ports:
+      - 5173:5173
+  server:
+    container_name: server
+    build: ./pill-counting-py-server
+    ports:
+      - 5001:5001
+    environment:
+      ROBOFLOW_API_KEY: FlWb1hTgAsBf3qK4jJmx
+      INFERENCE_SERVER_URL: http://inference-server:9001
+  inference-server:
+    container_name: inference-server
+    image: roboflow/roboflow-inference-server-cpu:latest
+    ports:
+      - 9001:9001
