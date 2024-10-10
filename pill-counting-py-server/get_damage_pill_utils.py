@@ -1,6 +1,7 @@
 import numpy as np
 from scipy import stats
 from colour import find_damaged_pills_by_colour
+from area import find_damaged_pills_by_area
 
 # (0) Red: Difference between blob and trgoh detection
 # (1) Blue: Area
@@ -29,27 +30,6 @@ def find_damaged_pills_by_difference(counting_predictions, blob_predictions, dis
                 "damaged_signature": "Difference between blob and trgoh detection distance."
             }
             counting_predictions.append(new_dict_to_append)
-
-def find_damaged_pills_by_area(counting_predictions, area_threshold):
-    ROUND_BASE = 5
-    areas = list()
-    areas_rounded = list()
-    # Calculate mode area of counting_predictions by rounding it off
-    for counting_prediction in counting_predictions:
-        if counting_prediction["is_added"]: continue
-        area = counting_prediction["width"] * counting_prediction["height"]
-        areas.append(area)
-        areas_rounded.append(ROUND_BASE * round(area / ROUND_BASE))
-    
-    mode = stats.mode(areas_rounded)
-
-    for counting_prediction in counting_predictions:
-        if counting_prediction["is_added"]: continue
-        area = counting_prediction["width"] * counting_prediction["height"]
-        if abs(area - mode[0]) > (0.3 * mode[0]):
-            counting_prediction["is_damaged"] = True
-            counting_prediction["damaged_index"] = 1
-            counting_prediction["damaged_signature"] = "Area too different from the mode."
 
 def find_damaged_pills_by_area_z_score(counting_predictions, threshold):
     anomalies = list()
@@ -80,7 +60,7 @@ def generate_final_pill_dict(counting_predictions, blob_predictions, distance_be
     
     find_damaged_pills_by_difference(counting_predictions, blob_predictions, distance_betw_trgoh_and_blob_max)
     
-    find_damaged_pills_by_area(counting_predictions, 300)
+    find_damaged_pills_by_area(counting_predictions, 300, image)
 
     find_damaged_pills_by_colour(counting_predictions, image)
     return counting_predictions
