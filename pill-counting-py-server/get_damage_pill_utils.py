@@ -18,7 +18,7 @@ def find_damaged_pills_by_difference(counting_predictions, blob_predictions, dis
             if distance < min_distance:
                 min_distance = distance
         
-        print(min_distance, min_distance > distance_betw_trgoh_and_blob_max)
+        # print(min_distance, min_distance > distance_betw_trgoh_and_blob_max)
         
         if min_distance > distance_betw_trgoh_and_blob_max:
             new_dict_to_append = {
@@ -43,7 +43,7 @@ def find_damaged_pills_by_area_z_score(counting_predictions, threshold):
     areas = [counting_prediction["width"] * counting_prediction["height"] for counting_prediction in counting_predictions]
     anomalies = z_score_outliers(areas, threshold)
 
-    print(areas, anomalies)
+    # print(areas, anomalies)
 
     for counting_prediction in counting_predictions:
         if counting_prediction["width"] * counting_prediction["height"] in anomalies:
