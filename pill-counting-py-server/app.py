@@ -20,7 +20,8 @@ MODEL_ID = "trgoh/1"
 
 rf = Roboflow(api_key=os.getenv("ROBOFLOW_API_KEY"))
 project = rf.workspace().project("trgoh")
-model = project.version(version_number=1, local=os.getenv("INFERENCE_SERVER_URL")+"/").model
+# model = project.version(version_number=1, local=os.getenv("INFERENCE_SERVER_URL")+"/").model
+model = project.version(1).model
 
 model.confidence = 50
 model.overlap = 80
