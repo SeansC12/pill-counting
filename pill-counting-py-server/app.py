@@ -29,7 +29,8 @@ def get_counting_inference(image):
 @app.route("/", methods=["GET", "POST"])
 @cross_origin(send_wildcard=True)
 def index():
-    image = request.json["image"]
+    req_data = request.get_json(force=True)
+    image = req_data["image"]
 
     if image == None or image == "":
         return json.dumps({"error": "Something went wrong in image transmission."}), 400
