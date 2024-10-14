@@ -44,8 +44,8 @@ function App() {
         const res = await fetch("http://localhost:5001", {
           method: "POST",
           headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
+            Accept: "text/plain",
+            "Content-Type": "text/plain",
           },
           body: JSON.stringify({
             image: imageToSend,
