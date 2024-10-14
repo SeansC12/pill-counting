@@ -87,7 +87,7 @@ function App() {
           brokenColour
         );
       }
-    }, 1000);
+    }, 3000);
     return () => {
       clearInterval(fetchInterval);
     };

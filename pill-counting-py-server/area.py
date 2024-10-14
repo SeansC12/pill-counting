@@ -39,7 +39,6 @@ def find_damaged_pills_by_area(counting_predictions, area_threshold, image):
         areas.append(area)
         areas_rounded.append(ROUND_BASE * round(area / ROUND_BASE))
     
-    print(areas, fake_areas)
     median = np.median(areas_rounded)
 
     for pill in counting_predictions:

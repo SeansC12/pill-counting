@@ -14,6 +14,6 @@ services:
       INFERENCE_SERVER_URL: http://inference-server:9001
   inference-server:
     container_name: inference-server
-    image: roboflow/roboflow-inference-server-cpu:latest
+    image: roboflow/inference-server:cpu
     ports:
       - 9001:9001
