@@ -5,6 +5,7 @@ WORKDIR /python-server
 COPY requirements.txt requirements.txt
 RUN apt-get update -y && apt-get upgrade -y && apt-get install ffmpeg libsm6 libxext6 -y
 RUN pip3 install -r requirements.txt
+RUN pip3 install ultralytics
 
 COPY . .
 
