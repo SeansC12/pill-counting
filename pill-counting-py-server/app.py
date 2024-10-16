@@ -19,10 +19,10 @@ load_dotenv()
 MODEL_ID = "trgoh/1"
 model = YOLO("trgoh.pt")
 
-warm_up_image = cv2.imread("warm_up.jpg")
-for i in range(20):
-    print(f"warm up {i}")
-    model.predict(warm_up_image)
+# warm_up_image = cv2.imread("warm_up.jpg")
+# for i in range(20):
+#     print(f"warm up {i}")
+#     model.predict(warm_up_image)
 
 # Counting inferencing
 def get_counting_inference(image):
@@ -56,11 +56,9 @@ def index():
     counting_predictions = get_counting_inference(image)
     blob_predictions = get_all_blob_coordinates(image)
     
-    print(counting_predictions)
-
     final_pill_dict = generate_final_pill_dict(counting_predictions, blob_predictions, 50, 1, image)
 
-    return counting_predictions
+    return final_pill_dict
 
 if __name__=='__main__':
     app.run(debug=True, host='0.0.0.0', port=5001)

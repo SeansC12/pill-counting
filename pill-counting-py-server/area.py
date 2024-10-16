@@ -39,14 +39,13 @@ def find_damaged_pills_by_area(counting_predictions, area_threshold, image):
         areas.append(area)
         areas_rounded.append(ROUND_BASE * round(area / ROUND_BASE))
     
-    print(areas, fake_areas)
     median = np.median(areas_rounded)
 
     for pill in counting_predictions:
         if pill["is_added"] or pill["is_damaged"]: continue
 
         area = calculate_area(image, pill["x"], pill["y"], pill["width"], pill["height"])
-        if abs(area - median) > (0.5 * median):
+        if abs(area - median) > (0.35 * median):
             pill["is_damaged"] = True
             pill["damaged_index"] = 1
             pill["damaged_signature"] = "Area too different from the mode."
