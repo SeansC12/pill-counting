@@ -3,6 +3,9 @@ from flask_cors import CORS, cross_origin
 from inference_sdk import InferenceConfiguration, InferenceHTTPClient
 from blobs import get_all_blob_coordinates
 from get_damage_pill_utils import generate_final_pill_dict
+from ultralytics import YOLO
+from helpers import convert_b64_to_image
+import cv2
 import os
 from dotenv import load_dotenv
 import json
@@ -14,16 +17,31 @@ load_dotenv()
 
 # Counting model config
 MODEL_ID = "trgoh/1"
-config = InferenceConfiguration(confidence_threshold=0.5, iou_threshold=0.8)
-counting_client = InferenceHTTPClient(api_url=os.getenv("INFERENCE_SERVER_URL"),
-    api_key=os.getenv("ROBOFLOW_API_KEY"),
-)
-counting_client.configure(config)
-counting_client.select_model(MODEL_ID)
+model = YOLO("trgoh.pt")
+
+warm_up_image = cv2.imread("warm_up.jpg")
+for i in range(20):
+    print(f"warm up {i}")
+    model.predict(warm_up_image)
 
 # Counting inferencing
 def get_counting_inference(image):
-    counting_predictions = counting_client.infer(image)
+    cv2.imwrite("temp.jpg", convert_b64_to_image(image))
+    result = model.predict("temp.jpg")
+    # Return the predictions of the YOLO model by returning the x and y coordinates, and width and height of the bounding box
+    result = result[0].boxes.xywh.tolist()
+    counting_predictions = list()
+    for i in result:
+        counting_predictions.append({
+            "x": i[0],
+            "y": i[1],
+            "width": i[2],
+            "height": i[3],
+            "is_damaged": False,
+            "is_added": False,
+            "damaged_signature": "Healthy",
+            "damaged_index": -1
+        })
     return counting_predictions
 
 @app.route("/", methods=["GET", "POST"])
@@ -38,11 +56,11 @@ def index():
     counting_predictions = get_counting_inference(image)
     blob_predictions = get_all_blob_coordinates(image)
     
-    # print(counting_predictions)
+    print(counting_predictions)
 
-    final_pill_dict = generate_final_pill_dict(counting_predictions["predictions"], blob_predictions, 50, 1, image)
+    final_pill_dict = generate_final_pill_dict(counting_predictions, blob_predictions, 50, 1, image)
 
-    return final_pill_dict
+    return counting_predictions
 
 if __name__=='__main__':
     app.run(debug=True, host='0.0.0.0', port=5001)
