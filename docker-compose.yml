@@ -12,8 +12,8 @@ services:
     environment:
       ROBOFLOW_API_KEY: FlWb1hTgAsBf3qK4jJmx
       INFERENCE_SERVER_URL: http://inference-server:9001
-  inference-server:
-    container_name: inference-server
-    image: roboflow/roboflow-inference-server-cpu:latest
-    ports:
-      - 9001:9001
+  # inference-server:
+  #   container_name: inference-server
+  #   image: roboflow/roboflow-inference-server-cpu:latest
+  #   ports:
+  #     - 9001:9001
