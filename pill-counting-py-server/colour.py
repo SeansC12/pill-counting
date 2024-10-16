@@ -56,8 +56,6 @@ def find_damaged_pills_by_colour(counting_predictions, img):
         blue_r = blue_rounded[index]
         index += 1
 
-        print(r_mode[0], g_mode[0], b_mode[0], red_r, green_r, blue_r)
-
         if abs(red_r - r_mode[0]) > (0.4 * r_mode[0]) or abs(green_r - g_mode[0]) > (0.4 * g_mode[0]) or abs(blue_r - b_mode[0]) > (0.4 * b_mode[0]):
             pill["is_damaged"] = True
             pill["damaged_index"] = 2
