@@ -13,7 +13,7 @@ def get_all_blob_coordinates(image):
     image = np.clip(image, 0, 255)
     image = np.uint8(image)
 
-    cv2.imwrite("data/preprocessed.jpg", image)
+    # cv2.imwrite("data/preprocessed.jpg", image)
 
     lower = np.array([0, 0, 0])
     upper = np.array([55, 55, 55])
@@ -57,7 +57,7 @@ def get_all_blob_coordinates(image):
             cv2.circle(img, (int(x), int(y)), color=color, radius=10, thickness=3) # you can change the radius and the thickness
     
     draw_keypoints(morph, keypoints, color=255)
-    cv2.imwrite("data/morph.jpg", morph)
+    # cv2.imwrite("data/morph.jpg", morph)
 
     coordinates_of_blobs = list()
 
