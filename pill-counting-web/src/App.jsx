@@ -114,7 +114,7 @@ function App() {
         >
           <Webcam
             ref={webcamRef}
-            // muted={true}
+            muted={true}
             screenshotFormat="image/jpeg"
             videoConstraints={{
               width: WEBCAM_VIDEO_WIDTH,
