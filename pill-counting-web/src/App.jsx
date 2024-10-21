@@ -117,8 +117,10 @@ function App() {
             muted={true}
             screenshotFormat="image/jpeg"
             videoConstraints={{
-              width: WEBCAM_VIDEO_WIDTH,
-              height: WEBCAM_VIDEO_HEIGHT,
+              // width: WEBCAM_VIDEO_WIDTH,
+              // height: WEBCAM_VIDEO_HEIGHT,
+              aspectRatio: 1,
+              facingMode: "user",
             }}
             className="absolute left-0 right-0 text-center z-10 rounded-xl"
           />
