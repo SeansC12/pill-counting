@@ -15,7 +15,7 @@ import PillCountChangeKeypad from "./components/Keypad";
 import SettingsDialog from "./components/SettingsDialog";
 
 const WEBCAM_VIDEO_HEIGHT = 568;
-const WEBCAM_VIDEO_WIDTH = 568;
+const WEBCAM_VIDEO_WIDTH = 700;
 
 function App() {
   const webcamRef = useRef();
@@ -87,7 +87,7 @@ function App() {
           brokenColour
         );
       }
-    }, 3000);
+    }, 2000);
     return () => {
       clearInterval(fetchInterval);
     };
@@ -101,7 +101,8 @@ function App() {
       />
       <div
         className={cn(
-          "w-[" + WEBCAM_VIDEO_WIDTH + "px]",
+          // "w-[" + WEBCAM_VIDEO_WIDTH + "px]",
+          "w-[700px]",
           "aspect-square"
         )}
       >
@@ -117,9 +118,8 @@ function App() {
             muted={true}
             screenshotFormat="image/jpeg"
             videoConstraints={{
-              // width: WEBCAM_VIDEO_WIDTH,
-              // height: WEBCAM_VIDEO_HEIGHT,
-              aspectRatio: 1,
+              width: WEBCAM_VIDEO_WIDTH,
+              height: WEBCAM_VIDEO_HEIGHT,
               facingMode: "user",
             }}
             className="absolute left-0 right-0 text-center z-10 rounded-xl"

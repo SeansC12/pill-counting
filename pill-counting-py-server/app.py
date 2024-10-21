@@ -27,7 +27,7 @@ model = YOLO("trgoh.pt")
 # Counting inferencing
 def get_counting_inference(image):
     cv2.imwrite("temp.jpg", convert_b64_to_image(image))
-    result = model.predict("temp.jpg")
+    result = model.predict("temp.jpg", iou=0.5, conf=0.5)
     # Return the predictions of the YOLO model by returning the x and y coordinates, and width and height of the bounding box
     result = result[0].boxes.xywh.tolist()
     counting_predictions = list()
