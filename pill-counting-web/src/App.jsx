@@ -9,9 +9,9 @@ import {
   handleDamagedPillState,
 } from "./lib/utils";
 
-import PillProgressCard from "./components/PillProgressCard";
+import PillCountCard from "./components/PillCountCard";
+import SettingsCard from "./components/SettingsCard";
 import AlertCard from "./components/AlertCard";
-import PillCountChangeKeypad from "./components/Keypad";
 import SettingsDialog from "./components/SettingsDialog";
 
 const WEBCAM_VIDEO_HEIGHT = 568;
@@ -24,8 +24,10 @@ function App() {
   const [pillCount, setPillCount] = useState(0);
   const [damagedPillCount, setDamagedPillCount] =
     useState(0);
-  const [totalPillCount, setTotalPillCount] =
-    useState("40");
+
+  const [confidenceThreshold, setConfidenceThreshold] =
+    useState(0.5);
+  const [iouThreshold, setIouThreshold] = useState(0.5);
 
   const [hasAlert, setHasAlert] = useState(false);
   const [isSettingsDialogOpen, setIsSettingsDialogOpen] =
@@ -131,14 +133,15 @@ function App() {
         </div>
       </div>
       <div className="flex flex-col grow gap-4">
-        <PillProgressCard
+        <PillCountCard
           pillCount={pillCount}
-          totalPillCount={totalPillCount}
           setIsSettingsDialogOpen={setIsSettingsDialogOpen}
         />
-        <PillCountChangeKeypad
-          totalPillCount={totalPillCount}
-          setTotalPillCount={setTotalPillCount}
+        <SettingsCard
+          confidenceThreshold={confidenceThreshold}
+          setConfidenceThreshold={setConfidenceThreshold}
+          iouThreshold={iouThreshold}
+          setIouThreshold={setIouThreshold}
         />
         <AlertCard
           hasAlert={hasAlert}
