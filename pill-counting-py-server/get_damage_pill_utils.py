@@ -51,16 +51,16 @@ def find_damaged_pills_by_area_z_score(counting_predictions, threshold):
             counting_prediction["damaged_index"] = 1
             counting_prediction["damaged_signature"] = "Area too different from the mode (by z_score outliers)."
 
-def generate_final_pill_dict(counting_predictions, blob_predictions, distance_betw_trgoh_and_blob_max, area_threshold, image):
+def generate_final_pill_dict(counting_predictions, blob_predictions, distance_betw_trgoh_and_blob_max, area_threshold, image, enabled_boolean_array):
     for counting_prediction in counting_predictions:
         counting_prediction["is_damaged"] = False
         counting_prediction["is_added"] = False
         counting_prediction["damaged_signature"] = "Healthy"
         counting_prediction["damaged_index"] = -1
     
-    find_damaged_pills_by_difference(counting_predictions, blob_predictions, distance_betw_trgoh_and_blob_max)
+    if enabled_boolean_array[2]: find_damaged_pills_by_difference(counting_predictions, blob_predictions, distance_betw_trgoh_and_blob_max)
     
-    find_damaged_pills_by_area(counting_predictions, 300, image)
+    if enabled_boolean_array[0]: find_damaged_pills_by_area(counting_predictions, 300, image)
 
-    find_damaged_pills_by_colour(counting_predictions, image)
+    if enabled_boolean_array[1]: find_damaged_pills_by_colour(counting_predictions, image)
     return counting_predictions

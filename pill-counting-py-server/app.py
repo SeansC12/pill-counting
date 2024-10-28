@@ -25,10 +25,10 @@ model = YOLO("trgoh.pt")
 #     model.predict(warm_up_image)
 
 # Counting inferencing
-def get_counting_inference(image):
+def get_counting_inference(image, confidence_threshold, iou_threshold):
     cv2.imwrite("temp.jpg", convert_b64_to_image(image))
-    result = model.predict("temp.jpg", iou=0.5, conf=0.5)
-    # Return the predictions of the YOLO model by returning the x and y coordinates, and width and height of the bounding box
+    result = model.predict("temp.jpg", iou=iou_threshold, conf=confidence_threshold)
+
     result = result[0].boxes.xywh.tolist()
     counting_predictions = list()
     for i in result:
@@ -49,11 +49,16 @@ def get_counting_inference(image):
 def index():
     req_data = request.get_json(force=True)
     image = req_data["image"]
+    is_area_enabled = req_data["is_area_enabled"]
+    is_colour_enabled = req_data["is_colour_enabled"]
+    is_blob_enabled = req_data["is_blob_enabled"]
+    confidence_threshold = req_data["confidence_threshold"]
+    iou_threshold = req_data["iou_threshold"]
 
     if image == None or image == "":
         return json.dumps({"error": "Something went wrong in image transmission."}), 400
 
-    counting_predictions = get_counting_inference(image)
+    counting_predictions = get_counting_inference(image, confidence_threshold, iou_threshold)
     blob_predictions = get_all_blob_coordinates(image)
     
     final_pill_dict = generate_final_pill_dict(counting_predictions, blob_predictions, 50, 1, image)
