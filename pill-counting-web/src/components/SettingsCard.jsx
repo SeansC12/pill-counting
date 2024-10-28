@@ -9,6 +9,12 @@ import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 
 export default function SettingsCard({
+  isAreaEnabled,
+  setIsAreaEnabled,
+  isColourEnabled,
+  setIsColourEnabled,
+  isBlobEnabled,
+  setIsBlobEnabled,
   confidenceThreshold,
   setConfidenceThreshold,
   iouThreshold,
@@ -30,7 +36,11 @@ export default function SettingsCard({
             >
               Area Check
             </Label>
-            <Switch id="notifications" />
+            <Switch
+              id="notifications"
+              checked={isAreaEnabled}
+              onCheckedChange={setIsAreaEnabled}
+            />
           </div>
           <div className="flex items-center justify-between">
             <Label
@@ -39,7 +49,11 @@ export default function SettingsCard({
             >
               Colour Check
             </Label>
-            <Switch id="darkMode" />
+            <Switch
+              id="darkMode"
+              checked={isColourEnabled}
+              onCheckedChange={setIsColourEnabled}
+            />
           </div>
           <div className="flex items-center justify-between">
             <Label
@@ -48,7 +62,11 @@ export default function SettingsCard({
             >
               Blob Detection
             </Label>
-            <Switch id="autoSave" />
+            <Switch
+              id="autoSave"
+              checked={isBlobEnabled}
+              onCheckedChange={setIsBlobEnabled}
+            />
           </div>
         </div>
         <div className="space-y-4">

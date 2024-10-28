@@ -25,6 +25,10 @@ function App() {
   const [damagedPillCount, setDamagedPillCount] =
     useState(0);
 
+  const [isAreaEnabled, setIsAreaEnabled] = useState(true);
+  const [isColourEnabled, setIsColourEnabled] =
+    useState(true);
+  const [isBlobEnabled, setIsBlobEnabled] = useState(true);
   const [confidenceThreshold, setConfidenceThreshold] =
     useState(0.5);
   const [iouThreshold, setIouThreshold] = useState(0.5);
@@ -51,6 +55,11 @@ function App() {
           },
           body: JSON.stringify({
             image: imageToSend,
+            is_area_enabled: isAreaEnabled,
+            is_colour_enabled: isColourEnabled,
+            is_blob_enabled: isBlobEnabled,
+            confidence_threshold: confidenceThreshold,
+            iou_threshold: iouThreshold,
           }),
         });
 
@@ -138,6 +147,12 @@ function App() {
           setIsSettingsDialogOpen={setIsSettingsDialogOpen}
         />
         <SettingsCard
+          isAreaEnabled={isAreaEnabled}
+          setIsAreaEnabled={setIsAreaEnabled}
+          isColourEnabled={isColourEnabled}
+          setIsColourEnabled={setIsColourEnabled}
+          isBlobEnabled={isBlobEnabled}
+          setIsBlobEnabled={setIsBlobEnabled}
           confidenceThreshold={confidenceThreshold}
           setConfidenceThreshold={setConfidenceThreshold}
           iouThreshold={iouThreshold}
