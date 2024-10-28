@@ -61,7 +61,7 @@ def index():
     counting_predictions = get_counting_inference(image, confidence_threshold, iou_threshold)
     blob_predictions = get_all_blob_coordinates(image)
     
-    final_pill_dict = generate_final_pill_dict(counting_predictions, blob_predictions, 50, 1, image)
+    final_pill_dict = generate_final_pill_dict(counting_predictions, blob_predictions, 50, 1, image, [is_area_enabled, is_colour_enabled, is_blob_enabled])
 
     return final_pill_dict
 

@@ -38,8 +38,11 @@ export default function SettingsCard({
             </Label>
             <Switch
               id="notifications"
-              checked={isAreaEnabled}
-              onCheckedChange={setIsAreaEnabled}
+              // checked={isAreaEnabled}
+              defaultChecked={isAreaEnabled}
+              onCheckedChange={(checked) => {
+                setIsAreaEnabled(checked);
+              }}
             />
           </div>
           <div className="flex items-center justify-between">
@@ -52,7 +55,9 @@ export default function SettingsCard({
             <Switch
               id="darkMode"
               checked={isColourEnabled}
-              onCheckedChange={setIsColourEnabled}
+              onCheckedChange={(checked) =>
+                setIsColourEnabled(checked)
+              }
             />
           </div>
           <div className="flex items-center justify-between">
@@ -65,7 +70,9 @@ export default function SettingsCard({
             <Switch
               id="autoSave"
               checked={isBlobEnabled}
-              onCheckedChange={setIsBlobEnabled}
+              onCheckedChange={(checked) =>
+                setIsBlobEnabled(checked)
+              }
             />
           </div>
         </div>

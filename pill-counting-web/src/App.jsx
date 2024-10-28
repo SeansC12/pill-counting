@@ -37,6 +37,39 @@ function App() {
   const [isSettingsDialogOpen, setIsSettingsDialogOpen] =
     useState(false);
 
+  const isAreaEnabledRef = useRef(isAreaEnabled);
+  const isColourEnabledRef = useRef(isColourEnabled);
+  const isBlobEnabledRef = useRef(isBlobEnabled);
+  const confidenceThresholdRef = useRef(
+    confidenceThreshold
+  );
+  const iouThresholdRef = useRef(iouThreshold);
+  const hasAlertRef = useRef(hasAlert);
+
+  useEffect(() => {
+    isAreaEnabledRef.current = isAreaEnabled;
+  }, [isAreaEnabled]);
+
+  useEffect(() => {
+    isColourEnabledRef.current = isColourEnabled;
+  }, [isColourEnabled]);
+
+  useEffect(() => {
+    isBlobEnabledRef.current = isBlobEnabled;
+  }, [isBlobEnabled]);
+
+  useEffect(() => {
+    confidenceThresholdRef.current = confidenceThreshold;
+  }, [confidenceThreshold]);
+
+  useEffect(() => {
+    iouThresholdRef.current = iouThreshold;
+  }, [iouThreshold]);
+
+  useEffect(() => {
+    hasAlertRef.current = hasAlert;
+  }, [hasAlert]);
+
   useEffect(() => {
     const fetchInterval = setInterval(async () => {
       if (
@@ -55,11 +88,12 @@ function App() {
           },
           body: JSON.stringify({
             image: imageToSend,
-            is_area_enabled: isAreaEnabled,
-            is_colour_enabled: isColourEnabled,
-            is_blob_enabled: isBlobEnabled,
-            confidence_threshold: confidenceThreshold,
-            iou_threshold: iouThreshold,
+            is_area_enabled: isAreaEnabledRef.current,
+            is_colour_enabled: isColourEnabledRef.current,
+            is_blob_enabled: isBlobEnabledRef.current,
+            confidence_threshold:
+              confidenceThresholdRef.current,
+            iou_threshold: iouThresholdRef.current,
           }),
         });
 
