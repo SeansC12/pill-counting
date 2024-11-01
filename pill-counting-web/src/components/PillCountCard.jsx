@@ -1,12 +1,13 @@
 import * as React from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
+import AlertCard from "./AlertCard";
 import { Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 
 export default function PillCountCard({
   pillCount,
+  damagedPillCount,
+  hasAlert,
   setIsSettingsDialogOpen,
 }) {
   return (
@@ -20,14 +21,18 @@ export default function PillCountCard({
         >
           <Settings className="h-5 w-5" />
         </Button>
-        <div className="flex items-center justify-center">
+        <div className="flex items-center justify-center mb-3">
           {/* <span className="text-lg font-medium">
             Pill Count
           </span> */}
           <span className={"text-6xl font-bold"}>
-            {Math.max(pillCount, 0)}
+            {Math.max(pillCount + damagedPillCount, 0)}
           </span>
         </div>
+        <AlertCard
+          hasAlert={hasAlert}
+          damagedPillCount={damagedPillCount}
+        />
       </CardContent>
     </Card>
   );

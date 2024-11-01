@@ -44,7 +44,6 @@ function App() {
     confidenceThreshold
   );
   const iouThresholdRef = useRef(iouThreshold);
-  const hasAlertRef = useRef(hasAlert);
 
   useEffect(() => {
     isAreaEnabledRef.current = isAreaEnabled;
@@ -65,10 +64,6 @@ function App() {
   useEffect(() => {
     iouThresholdRef.current = iouThreshold;
   }, [iouThreshold]);
-
-  useEffect(() => {
-    hasAlertRef.current = hasAlert;
-  }, [hasAlert]);
 
   useEffect(() => {
     const fetchInterval = setInterval(async () => {
@@ -132,7 +127,7 @@ function App() {
           brokenColour
         );
       }
-    }, 2000);
+    }, 3000);
     return () => {
       clearInterval(fetchInterval);
     };
@@ -178,6 +173,8 @@ function App() {
       <div className="flex flex-col grow gap-4">
         <PillCountCard
           pillCount={pillCount}
+          damagedPillCount={damagedPillCount}
+          hasAlert={hasAlert}
           setIsSettingsDialogOpen={setIsSettingsDialogOpen}
         />
         <SettingsCard
@@ -191,10 +188,6 @@ function App() {
           setConfidenceThreshold={setConfidenceThreshold}
           iouThreshold={iouThreshold}
           setIouThreshold={setIouThreshold}
-        />
-        <AlertCard
-          hasAlert={hasAlert}
-          damagedPillCount={damagedPillCount}
         />
       </div>
     </div>
