@@ -17,6 +17,9 @@ load_dotenv()
 
 # Counting model config
 MODEL_ID = "trgoh/1"
+yolo_model = YOLO("trgoh.pt")
+yolo_model.export(format="engine")
+
 model = YOLO("trgoh.pt")
 
 # warm_up_image = cv2.imread("warm_up.jpg")
