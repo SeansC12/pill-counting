@@ -1,5 +1,5 @@
 FROM python:3.9-bookworm
-FROM nvidia/cuda:11.3.1-base-ubuntu18.04 
+# FROM nvidia/cuda:11.3.1-base-ubuntu18.04 
 
 WORKDIR /python-server
 
@@ -18,7 +18,8 @@ RUN pip3 install -r requirements.txt
 
 RUN pip3 install ultralytics
 
-# RUN pip3 install torch===1.7.1 -f https://download.pytorch.org/whl/torch_stable.html
+RUN pip3 install torch===1.7.1 -f https://download.pytorch.org/whl/torch_stable.html
+
 
 # RUN wget https://nvidia.box.com/shared/static/cs3xn3td6sfgtene6jdvsxlr366m2dhq.whl -O torch-1.7.0-cp36-cp36m-linux_aarch64.whl
 # RUN pip install 'Cython<3'
