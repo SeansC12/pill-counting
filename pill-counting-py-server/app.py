@@ -26,7 +26,7 @@ print("Model is initialised.")
 # Counting inferencing
 def get_counting_inference(image, confidence_threshold, iou_threshold):
     cv2.imwrite("temp.jpg", convert_b64_to_image(image))
-    result = model.predict("temp.jpg", iou=0.5, conf=0.5)
+    result = model.predict("temp.jpg", iou=iou_threshold, conf=confidence_threshold)
 
     result = result[0].boxes.xywh.tolist()
     counting_predictions = list()
@@ -53,11 +53,6 @@ def index():
     is_blob_enabled = req_data["is_blob_enabled"]
     confidence_threshold = req_data["confidence_threshold"]
     iou_threshold = req_data["iou_threshold"]
-    # confidence_threshold = 0.5
-    # iou_threshold = 0.5
-    # is_area_enabled = True
-    # is_colour_enabled = True
-    # is_blob_enabled = True
 
     if image == None or image == "":
         return json.dumps({"error": "Something went wrong in image transmission."}), 400
