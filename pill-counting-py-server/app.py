@@ -19,10 +19,10 @@ load_dotenv()
 MODEL_ID = "trgoh/1"
 model = YOLO("trgoh.engine")
 
-# warm_up_image = cv2.imread("warm_up.jpg")
-# for i in range(20):
-#     print(f"warm up {i}")
-#     model.predict(warm_up_image)
+warm_up_image = cv2.imread("warm_up.jpg")
+for i in range(20):
+    print(f"warm up {i}")
+    model.predict(warm_up_image)
 
 # Counting inferencing
 def get_counting_inference(image, confidence_threshold, iou_threshold):
@@ -54,11 +54,6 @@ def index():
     is_blob_enabled = req_data["is_blob_enabled"]
     confidence_threshold = req_data["confidence_threshold"]
     iou_threshold = req_data["iou_threshold"]
-    # confidence_threshold = 0.5
-    # iou_threshold = 0.5
-    # is_area_enabled = True
-    # is_colour_enabled = True
-    # is_blob_enabled = True
 
     if image == None or image == "":
         return json.dumps({"error": "Something went wrong in image transmission."}), 400

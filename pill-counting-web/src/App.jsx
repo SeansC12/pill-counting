@@ -75,22 +75,25 @@ function App() {
         const imageToSend =
           webcamRef.current.getScreenshot();
 
-        const res = await fetch("http://localhost:5001", {
-          method: "POST",
-          headers: {
-            Accept: "text/plain",
-            "Content-Type": "text/plain",
-          },
-          body: JSON.stringify({
-            image: imageToSend,
-            is_area_enabled: isAreaEnabledRef.current,
-            is_colour_enabled: isColourEnabledRef.current,
-            is_blob_enabled: isBlobEnabledRef.current,
-            confidence_threshold:
-              confidenceThresholdRef.current,
-            iou_threshold: iouThresholdRef.current,
-          }),
-        });
+        const res = await fetch(
+          "http://192.168.2.30:5001",
+          {
+            method: "POST",
+            headers: {
+              Accept: "text/plain",
+              "Content-Type": "text/plain",
+            },
+            body: JSON.stringify({
+              image: imageToSend,
+              is_area_enabled: isAreaEnabledRef.current,
+              is_colour_enabled: isColourEnabledRef.current,
+              is_blob_enabled: isBlobEnabledRef.current,
+              confidence_threshold:
+                confidenceThresholdRef.current,
+              iou_threshold: iouThresholdRef.current,
+            }),
+          }
+        );
 
         if (res.status !== 200) {
           console.error(res.statusText);
