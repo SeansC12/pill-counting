@@ -11,15 +11,16 @@ white_upper = np.array([255, 255, 255])
 black_lower = np.array([0, 0, 0])
 black_upper = np.array([70, 70, 70]) # only very high because the dark background is very light
 
-def calculate_area(image, x_of_centre, y_of_centre, width, height):
-    # Step 1: Crop the image to the boundary box around the capsule
+def crop_image(image, x_of_centre, y_of_centre, width, height):
     left_x, right_x = int(x_of_centre - (width // 2)), int(x_of_centre + (width // 2))
     top_y, bottom_y = int(y_of_centre - (height // 2)), int(y_of_centre + (height // 2))
+    return image[top_y:bottom_y, left_x:right_x]
 
-    cropped_image = image[top_y:bottom_y, left_x:right_x]
+def calculate_area(image):
+    cropped_image = image
 
-    brightness = -100
-    contrast = 200
+    brightness = 100
+    contrast = 100
     cropped_image = np.int16(cropped_image)
     cropped_image = cropped_image * (contrast/127+1) - contrast + brightness
     cropped_image = np.clip(cropped_image, 0, 255)
@@ -33,7 +34,8 @@ def calculate_area(image, x_of_centre, y_of_centre, width, height):
     _, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
     # Step 2: Morphological Operations (Opening - Erosion followed by Dilation)
-    kernel = np.ones((1, 3), np.uint8)
+    # kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (7, 3))
+    kernel = np.ones((3, 1), np.uint8)
     eroded = cv2.erode(thresh, kernel, iterations=2)
     dilated = cv2.dilate(eroded, kernel, iterations=3)
 
@@ -51,9 +53,14 @@ def calculate_area(image, x_of_centre, y_of_centre, width, height):
     markers = markers + 1  # Ensure background is labeled as 1
     markers[unknown == 255] = 0
 
+
     # Apply the Watershed algorithm
     colored_image = cv2.cvtColor(thresh, cv2.COLOR_GRAY2BGR)
     markers = cv2.watershed(colored_image, markers)
+
+    test_img = colored_image.copy()
+    test_img[markers == -1] = [255, 0, 0]
+    cv2.imwrite("watershed.jpg", test_img)
 
     # Step 5: Find the area of each capsule
     unique_labels = np.unique(markers)
@@ -82,7 +89,8 @@ def find_damaged_pills_by_area(counting_predictions, area_threshold, image):
     for pill in counting_predictions:
         if pill["is_added"] or pill["is_damaged"]: continue
         
-        area = calculate_area(image, pill["x"], pill["y"], pill["width"], pill["height"])
+        cropped_image = crop_image(image, pill["x"], pill["y"], pill["width"], pill["height"])
+        area = calculate_area(cropped_image)
         areas.append(area)
         areas_rounded.append(ROUND_BASE * round(area / ROUND_BASE))
     
@@ -93,18 +101,16 @@ def find_damaged_pills_by_area(counting_predictions, area_threshold, image):
     for pill in counting_predictions:
         if pill["is_added"] or pill["is_damaged"]: continue
 
-        area = calculate_area(image, pill["x"], pill["y"], pill["width"], pill["height"])
+        cropped_image = crop_image(image, pill["x"], pill["y"], pill["width"], pill["height"])
+        area = calculate_area(cropped_image)
         if abs(area - median) > (0.35 * median):
-            left_x, right_x = int(pill["x"] - (pill["width"] // 2)), int(pill["x"] + (pill["width"] // 2))
-            top_y, bottom_y = int(pill["y"] - (pill["height"] // 2)), int(pill["y"] + (pill["height"] // 2))
+            cropped_image = crop_image(image, pill["x"], pill["y"], pill["width"], pill["height"])
 
-            angle = np.arctan(pill["height"] / pill["width"])
-            print(angle)
-            cropped_image = image[top_y:bottom_y, left_x:right_x]
+            angle = np.arctan2(pill["height"], pill["width"])
             # Rotate the image such that the capsule is horizontal or vertical
             cropped_image = ndimage.rotate(cropped_image, angle * 180 / np.pi)
 
-            area = calculate_area(image, pill["x"], pill["y"], pill["width"], pill["height"])
+            area = calculate_area(cropped_image)
             cv2.imwrite("area_not_working.jpg", cropped_image)
             
             if abs(area - median) > (0.35 * median):

@@ -63,4 +63,10 @@ def generate_final_pill_dict(counting_predictions, blob_predictions, distance_be
     if enabled_boolean_array[0]: find_damaged_pills_by_area(counting_predictions, 300, image)
 
     if enabled_boolean_array[1]: find_damaged_pills_by_colour(counting_predictions, image)
+
+    # find_damaged_pills_by_difference(counting_predictions, blob_predictions, distance_betw_trgoh_and_blob_max)
+    
+    # find_damaged_pills_by_area(counting_predictions, 300, image)
+
+    # find_damaged_pills_by_colour(counting_predictions, image)
     return counting_predictions

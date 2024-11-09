@@ -4,10 +4,28 @@ import { useState } from "react";
 import {
   Dialog,
   DialogContent,
-  DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import { AlertCircle } from "lucide-react";
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from "@/components/ui/alert";
 import { cn } from "@/lib/utils";
+
+const Disclaimer = () => (
+  <Alert className="border-2 border-yellow-500 text-yellow-800 bg-yellow-300/30">
+    <AlertTitle className="text-lg">
+      The KKH7 team is not liable for any miscount or error
+      in patient prescriptions.
+    </AlertTitle>
+    <AlertDescription>
+      Double-checking the program's output is necessary to
+      ensure the pill count is accurate and that only
+      healthy pills are dispensed.
+    </AlertDescription>
+  </Alert>
+);
 
 export default function SettingsDialog({
   isSettingsDialogOpen,
@@ -15,11 +33,8 @@ export default function SettingsDialog({
 }) {
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
-  const tabs = [
-    "Error logs",
-    "Blob detection devmode",
-    "Other settings",
-  ];
+  const tabs = ["Disclaimer", "App logs"];
+  const components = [<Disclaimer />, <div>App logs</div>];
 
   return (
     <Dialog
@@ -54,11 +69,8 @@ export default function SettingsDialog({
               {tabs[activeTabIndex]}
             </h2>
             {/* Empty space for your components */}
-            <div className="bg-gray-100 dark:bg-gray-800 h-[calc(100%-2rem)] rounded-lg flex items-center justify-center">
-              <p className="text-gray-500 dark:text-gray-400">
-                Add your components here for the &quot;
-                {tabs[activeTabIndex]}&quot; tab
-              </p>
+            <div className="dark:bg-gray-800 h-[calc(100%-2rem)] rounded-lg flex items-start justify-center">
+              {components[activeTabIndex]}
             </div>
           </div>
         </div>
