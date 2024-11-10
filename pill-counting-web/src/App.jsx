@@ -11,7 +11,7 @@ import {
 
 import PillCountCard from "./components/PillCountCard";
 import SettingsCard from "./components/SettingsCard";
-import AlertCard from "./components/AlertCard";
+import { Skeleton } from "./components/ui/skeleton";
 import SettingsDialog from "./components/SettingsDialog";
 
 const WEBCAM_VIDEO_HEIGHT = 568;
@@ -36,6 +36,9 @@ function App() {
   const [hasAlert, setHasAlert] = useState(false);
   const [isSettingsDialogOpen, setIsSettingsDialogOpen] =
     useState(false);
+
+  const [isModelInitialising, setIsModelInitialising] =
+    useState(true);
 
   const isAreaEnabledRef = useRef(isAreaEnabled);
   const isColourEnabledRef = useRef(isColourEnabled);
@@ -95,10 +98,17 @@ function App() {
           }
         );
 
-        if (res.status !== 200) {
+        if (res.status !== 200 || res.status !== 201) {
           console.error(res.statusText);
           return;
         }
+
+        if (res.status === 201) {
+          setIsModelInitialising(true);
+          return;
+        }
+
+        setIsModelInitialising(false);
 
         const detections = await res.json();
 
@@ -156,17 +166,21 @@ function App() {
             "w-[" + WEBCAM_VIDEO_WIDTH + "px]"
           )}
         >
-          <Webcam
-            ref={webcamRef}
-            muted={true}
-            screenshotFormat="image/jpeg"
-            videoConstraints={{
-              width: WEBCAM_VIDEO_WIDTH,
-              height: WEBCAM_VIDEO_HEIGHT,
-              facingMode: "user",
-            }}
-            className="absolute left-0 right-0 text-center z-10 rounded-xl"
-          />
+          {isModelInitialising ? (
+            <Skeleton />
+          ) : (
+            <Webcam
+              ref={webcamRef}
+              muted={true}
+              screenshotFormat="image/jpeg"
+              videoConstraints={{
+                width: WEBCAM_VIDEO_WIDTH,
+                height: WEBCAM_VIDEO_HEIGHT,
+                facingMode: "user",
+              }}
+              className="absolute left-0 right-0 text-center z-10 rounded-xl"
+            />
+          )}
           <canvas
             ref={canvasRef}
             className="absolute left-0 right-0 text-center z-20"
