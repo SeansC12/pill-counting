@@ -15,14 +15,7 @@ cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 load_dotenv()
 
-# Counting model config
-MODEL_ID = "trgoh/1"
-model = YOLO("trgoh.engine")
-
-warm_up_image = cv2.imread("warm_up.jpg")
-for i in range(20):
-    print(f"warm up {i}")
-    model.predict(warm_up_image)
+model = None
 
 # Counting inferencing
 def get_counting_inference(image, confidence_threshold, iou_threshold):
@@ -49,14 +42,17 @@ initialise_model_index = 0
 @app.route("/", methods=["GET", "POST"])
 @cross_origin(send_wildcard=True)
 def index():
-    global initialise_model_index
+    global initialise_model_index, model
     initialise_model_index += 1
 
     if initialise_model_index == 1:
+        model = YOLO("trgoh.engine")
+
         warm_up_image = cv2.imread("warm_up.jpg")
         for i in range(20):
             print(f"warm up {i}")
             model.predict(warm_up_image)
+        print("Model is initialised.")
         return json.dumps({"message": "Model is initialising. This can take up to 5 minutes."}), 201
 
     req_data = request.get_json(force=True)
