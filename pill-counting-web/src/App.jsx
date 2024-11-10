@@ -167,7 +167,15 @@ function App() {
           )}
         >
           {isModelInitialising ? (
-            <Skeleton />
+            <div className="relative w-full h-full">
+              <Skeleton className="w-full h-full" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <p className="text-lg font-medium text-muted-foreground">
+                  Model is initialising. This can take up to
+                  5 minutes.
+                </p>
+              </div>
+            </div>
           ) : (
             <Webcam
               ref={webcamRef}
