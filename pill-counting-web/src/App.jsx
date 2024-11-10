@@ -79,7 +79,7 @@ function App() {
           webcamRef.current.getScreenshot();
 
         const res = await fetch(
-          "http://192.168.2.30:5001",
+          "http://localhost:5001",
           {
             method: "POST",
             headers: {
