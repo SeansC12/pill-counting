@@ -98,7 +98,7 @@ function App() {
           }
         );
 
-        if (res.status !== 200 || res.status !== 201) {
+        if (res.status !== 200) {
           setIsModelInitialising(true);
           console.error(res.statusText);
           return;
@@ -136,7 +136,7 @@ function App() {
           brokenColour
         );
       }
-    }, 3000);
+    }, 1500);
     return () => {
       clearInterval(fetchInterval);
     };
@@ -178,32 +178,9 @@ function App() {
             className="absolute left-0 right-0 text-center z-20"
           />
           {isModelInitialising && (
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-              <div className="relative">
-                <Skeleton className="w-24 h-24 rounded-full" />
-                <svg
-                  className="absolute top-0 left-0 animate-spin"
-                  viewBox="0 0 100 100"
-                  width="100"
-                  height="100"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle
-                    className="stroke-primary"
-                    cx="50"
-                    cy="50"
-                    r="45"
-                    strokeWidth="8"
-                    strokeLinecap="round"
-                    strokeDasharray="70 200"
-                  />
-                </svg>
-              </div>
-              <p className="mt-4 text-sm font-medium text-muted-foreground">
-                Model is initialising. This can take up to 5
-                minutes.
-              </p>
+            <div className="absolute z-30 w-full h-full text-center left-1/2 -translate-x-1/2 top-[280px] text-white">
+              Model is initialising. This can take up to 5
+              minutes.
             </div>
           )}
         </div>
