@@ -27,7 +27,7 @@ for i in range(20):
 # Counting inferencing
 def get_counting_inference(image, confidence_threshold, iou_threshold):
     cv2.imwrite("temp.jpg", convert_b64_to_image(image))
-    result = model.predict("temp.jpg", iou=0.5, conf=0.5)
+    result = model.predict("temp.jpg", iou=iou_threshold, conf=confidence_threshold)
 
     result = result[0].boxes.xywh.tolist()
     counting_predictions = list()
