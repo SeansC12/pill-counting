@@ -99,12 +99,8 @@ function App() {
         );
 
         if (res.status !== 200 || res.status !== 201) {
-          console.error(res.statusText);
-          return;
-        }
-
-        if (res.status === 201) {
           setIsModelInitialising(true);
+          console.error(res.statusText);
           return;
         }
 
@@ -166,33 +162,50 @@ function App() {
             "w-[" + WEBCAM_VIDEO_WIDTH + "px]"
           )}
         >
-          {isModelInitialising ? (
-            <div className="relative w-full h-full">
-              <Skeleton className="w-full h-full" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <p className="text-lg font-medium text-muted-foreground">
-                  Model is initialising. This can take up to
-                  5 minutes.
-                </p>
-              </div>
-            </div>
-          ) : (
-            <Webcam
-              ref={webcamRef}
-              muted={true}
-              screenshotFormat="image/jpeg"
-              videoConstraints={{
-                width: WEBCAM_VIDEO_WIDTH,
-                height: WEBCAM_VIDEO_HEIGHT,
-                facingMode: "user",
-              }}
-              className="absolute left-0 right-0 text-center z-10 rounded-xl"
-            />
-          )}
+          <Webcam
+            ref={webcamRef}
+            muted={true}
+            screenshotFormat="image/jpeg"
+            videoConstraints={{
+              width: WEBCAM_VIDEO_WIDTH,
+              height: WEBCAM_VIDEO_HEIGHT,
+              facingMode: "user",
+            }}
+            className="absolute left-0 right-0 text-center z-10 rounded-xl"
+          />
           <canvas
             ref={canvasRef}
             className="absolute left-0 right-0 text-center z-20"
           />
+          {isModelInitialising && (
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+              <div className="relative">
+                <Skeleton className="w-24 h-24 rounded-full" />
+                <svg
+                  className="absolute top-0 left-0 animate-spin"
+                  viewBox="0 0 100 100"
+                  width="100"
+                  height="100"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle
+                    className="stroke-primary"
+                    cx="50"
+                    cy="50"
+                    r="45"
+                    strokeWidth="8"
+                    strokeLinecap="round"
+                    strokeDasharray="70 200"
+                  />
+                </svg>
+              </div>
+              <p className="mt-4 text-sm font-medium text-muted-foreground">
+                Model is initialising. This can take up to 5
+                minutes.
+              </p>
+            </div>
+          )}
         </div>
       </div>
       <div className="flex flex-col grow gap-4">
